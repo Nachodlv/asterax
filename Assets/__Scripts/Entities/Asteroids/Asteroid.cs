@@ -51,7 +51,8 @@ namespace __Scripts.Asteroids
         }
 
         /// <summary>
-        /// <para>Activates the RigidBody by adding the component into the GameObject. It also sets its properties</para>
+        /// <para>Activates the RigidBody setting to false the isKinematic variable and enabling the SpaceObject
+        /// component</para>
         /// </summary>
         public void ActivateRigidbody()
         {
@@ -81,6 +82,13 @@ namespace __Scripts.Asteroids
             Destroy(gameObject);
         }
 
+        /// <summary>
+        /// <para>Reduces the health of the Stats attached to this GameObject.</para>
+        /// <para>If the asteroid is destroyed and the parameter isBullet is true then it sets the member variable
+        /// DestroyedByBullet to true</para>
+        /// </summary>
+        /// <param name="damage">The amount of health that will be depleted</param>
+        /// <param name="isBullet">If the GameObject making the damage is a bullet</param>
         public void ReceiveDamage(float damage, bool isBullet)
         {
             if (Parent != null)

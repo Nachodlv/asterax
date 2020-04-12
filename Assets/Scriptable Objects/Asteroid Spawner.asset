@@ -20,7 +20,7 @@ MonoBehaviour:
   - prefab: {fileID: 114354513612306156, guid: 5513cde93bb3343768ced35921a9c3c2, type: 2}
     size: 2
     childrenQuantity: 2
-    initialQuantity: 2
+    initialQuantity: 1
   - prefab: {fileID: 114486329951516448, guid: 1293b0763d7d344e0b908c097078ac09, type: 2}
     size: 2
     childrenQuantity: 0

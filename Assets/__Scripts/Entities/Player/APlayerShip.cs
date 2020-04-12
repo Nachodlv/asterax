@@ -52,7 +52,7 @@ public class APlayerShip : MonoBehaviour
     }
 
     /// <summary>
-    /// <para>If the Collision has the component Stats then it reduces its health by the damageOnHit</para>
+    /// <para>If the Collision has the component Asteroid then it deals damage to it</para>
     /// <para>The ship health is reduced by zero</para>
     /// </summary>
     /// <param name="other"></param>

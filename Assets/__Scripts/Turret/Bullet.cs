@@ -46,9 +46,8 @@ public class Bullet : MonoBehaviour
 	}
 
 	/// <summary>
-	/// <para>If the collider has the component Stats then it reduces its health by the bullet damage</para>
-	/// <para>If the collider has also the component Asteroid and it has destroyed it, then it sets the member variable
-	/// of the asteroid DestroyedByBullet to true</para>
+	/// <para>If the collider has the component Asteroid then it reduces its health by the bullet damage</para>
+	/// <para>It destroys the Bullet GameObject</para>
 	/// </summary>
 	/// <param name="other">The collision that hit the bullet</param>
 	private void OnCollisionEnter(Collision other)

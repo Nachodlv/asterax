@@ -54,14 +54,9 @@ public class Bullet : MonoBehaviour
 	private void OnCollisionEnter(Collision other)
 	{
 		var otherGameObject = other.gameObject;
-		var stats = otherGameObject.GetComponentInParent<Stats>();
-		if (stats == null) return;
-		var asteroid = otherGameObject.GetComponent<Asteroid>();
-		if (asteroid != null && stats.Health - damage < 0.01f)
-		{
-			asteroid.DestroyedByBullet = true;
-		} 
-		stats.Health -= damage;
+		var asteroid = otherGameObject.GetComponentInParent<Asteroid>();
+		if (asteroid == null) return;
+		asteroid.ReceiveDamage(damage, true);
 		Destroy(gameObject);
 	}
 }

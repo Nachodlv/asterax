@@ -1,4 +1,5 @@
 ﻿using System;
+using __Scripts.Asteroids;
 using UnityEngine;
 
 [RequireComponent(typeof(Mover), typeof(Stats), typeof(SphereCollider))]
@@ -57,9 +58,9 @@ public class APlayerShip : MonoBehaviour
     /// <param name="other"></param>
     private void OnCollisionEnter(Collision other)
     {
-        var stats = other.gameObject.GetComponentInParent<Stats>();
-        if (stats == null) return;
-        stats.Health -= damageOnHit;
+        var asteroid = other.gameObject.GetComponentInParent<Asteroid>();
+        if (asteroid == null) return;
+        asteroid.ReceiveDamage(damageOnHit, false);
         Stats.Health = 0;
     }
     

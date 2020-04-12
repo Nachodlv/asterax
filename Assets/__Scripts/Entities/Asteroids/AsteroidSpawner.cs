@@ -55,11 +55,13 @@ namespace __Scripts.Asteroids
         /// <param name="asteroid">The destroyed asteroid</param>
         private void DestroyAsteroid(Asteroid asteroid)
         {
-            asteroid.transform.DetachChildren();
+            // asteroid.transform.DetachChildren();
+            if (!_asteroids.Contains(asteroid)) return;
             _asteroids.Remove(asteroid);
             foreach (var asteroidChild in asteroid.Children)
             {
                 asteroidChild.ActivateRigidbody();
+                asteroidChild.transform.parent = null;
             }
 
             if (OnAsteroidDestroyed != null) OnAsteroidDestroyed(asteroid);
@@ -80,7 +82,7 @@ namespace __Scripts.Asteroids
                 asteroid.SetInitialDirection(Quaternion.Euler(0, 0, Random.Range(0, 360)) * asteroidTransform.up);
                 asteroid.OnDestroy += () => _onAsteroidDestroyed(asteroid);
                 _asteroids.Add(asteroid);
-                asteroid.Children = InstantiateChildrenPrefabs(asteroidPrefab, asteroidTransform);
+                asteroid.Children = InstantiateChildrenPrefabs(asteroidPrefab, asteroid);
                 asteroid.ActivateRigidbody();
             }
         }
@@ -92,7 +94,7 @@ namespace __Scripts.Asteroids
         /// <param name="asteroidPrefab">Children prefab</param>
         /// <param name="parent"></param>
         /// <returns>Spawned children</returns>
-        private List<Asteroid> InstantiateChildrenPrefabs(AsteroidPrefab asteroidPrefab, Transform parent)
+        private List<Asteroid> InstantiateChildrenPrefabs(AsteroidPrefab asteroidPrefab, Asteroid parent)
         {
             var asteroids = new List<Asteroid>();
             if (asteroidPrefab.childrenQuantity == 0) return asteroids;
@@ -107,7 +109,7 @@ namespace __Scripts.Asteroids
                 var result = InstantiateChildrenAsteroidPrefabs(prefabToSpawn, parent, asteroidPrefab.childrenQuantity);
                 foreach (var asteroidChildren in result)
                 {
-                    asteroidChildren.Children = InstantiateChildrenPrefabs(prefabToSpawn, asteroidChildren.transform);
+                    asteroidChildren.Children = InstantiateChildrenPrefabs(prefabToSpawn, asteroidChildren);
                 }
 
                 return result;
@@ -124,17 +126,20 @@ namespace __Scripts.Asteroids
         /// <param name="parent">The parent for the instantiated asteroids</param>
         /// <param name="quantity">How many asteroids will be instantiated from the prefab</param>
         /// <returns>Spawned children</returns>
-        private List<Asteroid> InstantiateChildrenAsteroidPrefabs(AsteroidPrefab asteroidPrefab, Transform parent, int quantity)
+        private List<Asteroid> InstantiateChildrenAsteroidPrefabs(AsteroidPrefab asteroidPrefab, Asteroid parent, int quantity)
         {
             var children = new List<Asteroid>();
+            var parentTransform = parent.transform;
             var separationBetweenAsteroids = 360 / quantity;
             var initialAngle = Random.Range(0, 360);
             var distance = asteroidSpawnerScriptableObject.spaceBetweenChildren;
             for (var i = 0; i < quantity; i++)
             {
                 var rotation = Quaternion.Euler(0 ,0 ,(initialAngle + i *separationBetweenAsteroids) % 360);
-                var offset = rotation * parent.up * distance;
-                var asteroid = Instantiate(asteroidPrefab.prefab, parent.position + offset, Quaternion.identity, parent);
+                var offset = rotation * parentTransform.up * distance;
+                var asteroid = Instantiate(asteroidPrefab.prefab, parentTransform.position + offset, Quaternion.identity, 
+                    parentTransform);
+                asteroid.Parent = parent;
                 asteroid.SetInitialDirection(offset.normalized);
                 asteroid.OnDestroy += () => _onAsteroidDestroyed(asteroid);
                 _asteroids.Add(asteroid);

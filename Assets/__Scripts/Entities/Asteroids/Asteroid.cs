@@ -21,6 +21,8 @@ namespace __Scripts.Asteroids
         }
         public bool DestroyedByBullet { get; set; }
 
+        public Asteroid Parent { get; set; }
+
         private Rigidbody _rigidbody;
         private Stats _stats;
         private Transform _transform;
@@ -35,6 +37,7 @@ namespace __Scripts.Asteroids
             _transform = transform;
             _spaceObject = GetComponent<SpaceObject>();
             _spaceObject.enabled = false;
+            _rigidbody = gameObject.GetComponent<Rigidbody>();
         }
         
         /// <summary>
@@ -52,10 +55,7 @@ namespace __Scripts.Asteroids
         /// </summary>
         public void ActivateRigidbody()
         {
-            if (_rigidbody != null) return;
-            _rigidbody = gameObject.AddComponent<Rigidbody>();
-            _rigidbody.useGravity = false;
-            _rigidbody.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
+            _rigidbody.isKinematic = false;
             _spaceObject.enabled = true;
             _activated = true;
             _rigidbody.velocity = _velocity;
@@ -80,6 +80,23 @@ namespace __Scripts.Asteroids
             if (OnDestroy != null) OnDestroy();
             Destroy(gameObject);
         }
+
+        public void ReceiveDamage(float damage, bool isBullet)
+        {
+            if (Parent != null)
+            {
+                Parent.ReceiveDamage(damage, isBullet);
+                return;
+            }
+
+            if (isBullet && _stats.Health - damage <= 0.0f)
+            {
+                DestroyedByBullet = true;
+            }
+
+            _stats.Health -= damage;
+        }
+        
         
     }
 }

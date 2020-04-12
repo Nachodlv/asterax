@@ -429,7 +429,7 @@ MonoBehaviour:
   asteroidSpawnerScriptableObject: {fileID: 11400000, guid: ed1e1f12f4c3542be826ecbd65da3ba3,
     type: 2}
   playerShip: {fileID: 2066196654}
-  maximumDistanceFromPlayerShip: 2
+  maximumDistanceFromPlayerShip: 3
 --- !u!4 &675327812
 Transform:
   m_ObjectHideFlags: 0
@@ -2113,5 +2113,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   secondsBetweenJumps: 2
-  maximumDistanceFromAsteroids: 3
+  maximumDistanceFromAsteroids: 4
   quantityOfJumps: 3
